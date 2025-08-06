@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
+import useDragScroll from "../../hooks/use-drag-scroll";
 
 type ImageSliderProps = {
   images: string[];
@@ -9,9 +10,12 @@ type ImageSliderProps = {
 function ImageSlider({ images, width = 640, height = 400 }: ImageSliderProps) {
   const [imagesLoaded, setImagesLoaded] = useState(0);
   const [loadedImages, setLoadedImages] = useState<HTMLImageElement[]>([]);
-  const [scrollOffset, setScrollOffset] = useState(0);
-
   const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  const { isDragging, scrollOffset, eventHandlers } = useDragScroll({
+    totalWidth: width * images.length,
+    containerWidth: width,
+  });
 
   useEffect(() => {
     const loadImages = async () => {
@@ -78,7 +82,6 @@ function ImageSlider({ images, width = 640, height = 400 }: ImageSliderProps) {
     });
   }, [loadedImages, imagesLoaded, width, height, scrollOffset, images.length]);
 
-  // Redraw when dependencies change
   useEffect(() => {
     drawImages();
   }, [drawImages]);
@@ -89,33 +92,15 @@ function ImageSlider({ images, width = 640, height = 400 }: ImageSliderProps) {
         ref={canvasRef}
         width={width}
         height={height}
+        {...eventHandlers}
         style={{
           border: "1px solid #ccc",
           borderRadius: "4px",
           maxWidth: "100%",
           height: "auto",
+          cursor: isDragging ? "grabbing" : "grab",
         }}
       />
-      <div>
-        <button
-          onClick={() => {
-            if (scrollOffset > 0) {
-              setScrollOffset(scrollOffset - width);
-            }
-          }}
-        >
-          Left
-        </button>
-        <button
-          onClick={() => {
-            if (scrollOffset < width * (images.length - 1)) {
-              setScrollOffset(scrollOffset + width);
-            }
-          }}
-        >
-          Right
-        </button>
-      </div>
     </div>
   );
 }
