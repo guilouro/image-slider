@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import useDragScroll from "../../hooks/use-drag-scroll";
 import { drawAllImages, loadImages } from "../../lib/canvas";
+import Loading from "../Loading";
 
 type ImageSliderProps = {
   images: string[];
@@ -9,37 +10,46 @@ type ImageSliderProps = {
 };
 
 function ImageSlider({ images, width = 640, height = 400 }: ImageSliderProps) {
+  const [isLoading, setIsLoading] = useState(true);
   const [imagesLoaded, setImagesLoaded] = useState(0);
   const [loadedImages, setLoadedImages] = useState<HTMLImageElement[]>([]);
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const animationFrameRef = useRef<number | null>(null);
 
   const { isDragging, scrollOffset, eventHandlers } = useDragScroll({
     totalWidth: width * images.length,
     containerWidth: width,
   });
 
-  const drawImages = useCallback(() => {
-    const canvas = canvasRef.current;
-    const canDrawCanvas =
-      canvas && loadedImages.length > 0 && imagesLoaded === images.length;
+  const renderImages = useCallback(() => {
+    if (animationFrameRef.current) {
+      cancelAnimationFrame(animationFrameRef.current);
+    }
 
-    if (!canDrawCanvas) return;
+    animationFrameRef.current = requestAnimationFrame(() => {
+      const canvas = canvasRef.current;
+      const canRenderCanvas =
+        canvas && loadedImages.length > 0 && imagesLoaded === images.length;
 
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
+      if (!canRenderCanvas) return;
 
-    drawAllImages(ctx, loadedImages, scrollOffset, width, height);
+      const ctx = canvas.getContext("2d");
+      if (!ctx) return;
+
+      drawAllImages(ctx, loadedImages, scrollOffset, width, height);
+    });
   }, [loadedImages, imagesLoaded, width, height, scrollOffset, images.length]);
 
   useEffect(() => {
     const loadAllImages = async () => {
       try {
         const imageElements = await loadImages(images);
-        console.log("imageElements", imageElements);
         setLoadedImages(imageElements);
         setImagesLoaded(imageElements.length);
       } catch (error) {
         console.error("Error loading images", error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -47,23 +57,21 @@ function ImageSlider({ images, width = 640, height = 400 }: ImageSliderProps) {
   }, [images]);
 
   useEffect(() => {
-    drawImages();
-  }, [drawImages]);
+    renderImages();
+  }, [renderImages]);
 
   return (
-    <canvas
-      ref={canvasRef}
-      width={width}
-      height={height}
-      {...eventHandlers}
-      style={{
-        border: "1px solid #ccc",
-        borderRadius: "4px",
-        maxWidth: "100%",
-        height: "auto",
-        cursor: isDragging ? "grabbing" : "grab",
-      }}
-    />
+    <div className="slider-container">
+      {isLoading && <Loading />}
+      <canvas
+        className="slider"
+        ref={canvasRef}
+        width={width}
+        height={height}
+        {...eventHandlers}
+        style={{ cursor: isDragging ? "grabbing" : "grab" }}
+      />
+    </div>
   );
 }
 
