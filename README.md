@@ -129,15 +129,19 @@ npm run test:ui
 
 ## 🔄 CI/CD
 
-This project uses GitHub Actions for automated testing. The workflow runs on every push to main and:
+This project uses [GitHub Actions](https://github.com/guilouro/image-slider/actions/workflows/test.yml) for automated testing. The workflow runs on every push to main and:
 
 - Installs dependencies with `npm install`
 - Runs tests with `npm test`
 - Verifies the build with `npm run build`
 
+<img width="1916" height="976" alt="image" src="https://github.com/user-attachments/assets/2dcd0030-a8b5-40b0-92e5-5026c946413a" />
+
 ## 📦 Using the Built Application
 
 After running `npm run build`, the optimized files will be generated in the `dist/` folder. You can serve these files using any static file server:
+
+> **⚠️ Important Note**: The `dist/` folder is included in this repository only because it's a project requirement. In normal development practices, I would typically exclude this folder from version control using `.gitignore`, as build artifacts should be generated during deployment rather than committed to the repository.
 
 ### Using a Local Server
 
@@ -207,10 +211,6 @@ Unlike the original example slider, this implementation includes full mobile sup
 - **Progressive Loading**: Load low-resolution thumbnails first, then high-res images
 - **WebP Support**: Automatic format detection and optimization
 
-## 📸 Demo
-
-[Add GIF of the slider in action here]
-
 ## 🌐 Live Demo
 
-[Add link to deployed application here]
+[https://image-slider-smoky-three.vercel.app/](https://image-slider-smoky-three.vercel.app/)
