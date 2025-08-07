@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import useDragScroll from "../../hooks/use-drag-scroll";
+import { drawAllImages, loadImages } from "../../lib/canvas";
 
 type ImageSliderProps = {
   images: string[];
@@ -17,31 +18,6 @@ function ImageSlider({ images, width = 640, height = 400 }: ImageSliderProps) {
     containerWidth: width,
   });
 
-  useEffect(() => {
-    const loadImages = async () => {
-      const imageElements: HTMLImageElement[] = [];
-      let loadedCount = 0;
-
-      const onImageLoad = () => {
-        loadedCount++;
-        if (loadedCount === images.length) {
-          setImagesLoaded(loadedCount);
-        }
-      };
-
-      images.forEach((src) => {
-        const img = new Image();
-        img.onload = onImageLoad;
-        img.src = src;
-        imageElements.push(img);
-      });
-
-      setLoadedImages(imageElements);
-    };
-
-    loadImages();
-  }, [images]);
-
   const drawImages = useCallback(() => {
     const canvas = canvasRef.current;
     const canDrawCanvas =
@@ -52,56 +28,42 @@ function ImageSlider({ images, width = 640, height = 400 }: ImageSliderProps) {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    // Clear canvas
-    ctx.clearRect(0, 0, width, height);
-
-    // Draw each image
-    loadedImages.forEach((image, index) => {
-      const x = index * width - scrollOffset;
-
-      if (x + width > 0 && x < width) {
-        const canvasAspect = width / height;
-        const imageAspect = image.width / image.height;
-
-        let drawWidth, drawHeight, offsetX, offsetY;
-
-        if (imageAspect > canvasAspect) {
-          drawWidth = width;
-          drawHeight = width / imageAspect;
-          offsetX = 0;
-          offsetY = (height - drawHeight) / 2;
-        } else {
-          drawHeight = height;
-          drawWidth = height * imageAspect;
-          offsetX = (width - drawWidth) / 2;
-          offsetY = 0;
-        }
-
-        ctx.drawImage(image, x + offsetX, offsetY, drawWidth, drawHeight);
-      }
-    });
+    drawAllImages(ctx, loadedImages, scrollOffset, width, height);
   }, [loadedImages, imagesLoaded, width, height, scrollOffset, images.length]);
+
+  useEffect(() => {
+    const loadAllImages = async () => {
+      try {
+        const imageElements = await loadImages(images);
+        console.log("imageElements", imageElements);
+        setLoadedImages(imageElements);
+        setImagesLoaded(imageElements.length);
+      } catch (error) {
+        console.error("Error loading images", error);
+      }
+    };
+
+    loadAllImages();
+  }, [images]);
 
   useEffect(() => {
     drawImages();
   }, [drawImages]);
 
   return (
-    <div>
-      <canvas
-        ref={canvasRef}
-        width={width}
-        height={height}
-        {...eventHandlers}
-        style={{
-          border: "1px solid #ccc",
-          borderRadius: "4px",
-          maxWidth: "100%",
-          height: "auto",
-          cursor: isDragging ? "grabbing" : "grab",
-        }}
-      />
-    </div>
+    <canvas
+      ref={canvasRef}
+      width={width}
+      height={height}
+      {...eventHandlers}
+      style={{
+        border: "1px solid #ccc",
+        borderRadius: "4px",
+        maxWidth: "100%",
+        height: "auto",
+        cursor: isDragging ? "grabbing" : "grab",
+      }}
+    />
   );
 }
 
