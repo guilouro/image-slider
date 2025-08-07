@@ -56,6 +56,9 @@ export function drawAllImages(
 ) {
   canvasContext.clearRect(0, 0, width, height);
 
+  canvasContext.fillStyle = "#f2f2f2";
+  canvasContext.fillRect(0, 0, width, height);
+
   images.forEach((image, index) => {
     const x = index * width - scrollOffset;
     const isImageVisible = x + width > 0 && x < width;

@@ -58,10 +58,10 @@ function useDragScroll({
     [dragStartX, scrollOffset, maxScrollOffset]
   );
 
-  const handleMouseDown = useCallback((e: React.MouseEvent) => {
+  const handleMouseDown = (e: React.MouseEvent) => {
     setIsDragging(true);
     setDragStartX(e.clientX);
-  }, []);
+  };
 
   const handleMouseMove = useCallback(
     (e: React.MouseEvent) => {
@@ -70,18 +70,18 @@ function useDragScroll({
     [isDragging, updateScrollOffset]
   );
 
-  const handleMouseUp = useCallback(() => {
+  const handleMouseUp = () => {
     setIsDragging(false);
-  }, []);
+  };
 
-  const handleMouseLeave = useCallback(() => {
+  const handleMouseLeave = () => {
     setIsDragging(false);
-  }, []);
+  };
 
-  const handleTouchStart = useCallback((e: React.TouchEvent) => {
+  const handleTouchStart = (e: React.TouchEvent) => {
     setIsDragging(true);
     setDragStartX(e.touches[0].clientX);
-  }, []);
+  };
 
   const handleTouchMove = useCallback(
     (e: React.TouchEvent) => {
@@ -90,9 +90,9 @@ function useDragScroll({
     [isDragging, updateScrollOffset]
   );
 
-  const handleTouchEnd = useCallback(() => {
+  const handleTouchEnd = () => {
     setIsDragging(false);
-  }, []);
+  };
 
   return {
     isDragging,

@@ -46,6 +46,8 @@ describe("drawAllImages", () => {
     mockContext = {
       clearRect: vi.fn(),
       drawImage: vi.fn(),
+      fillStyle: "",
+      fillRect: vi.fn(),
     } as unknown as CanvasRenderingContext2D;
   });
 
