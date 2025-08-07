@@ -2,10 +2,10 @@ import "./App.css";
 import ImageSlider from "./components/ImageSlider";
 
 const images = [
-  "https://picsum.photos/800/600?random=1",
-  "https://picsum.photos/600/800?random=2",
-  "https://picsum.photos/700/700?random=3",
-  "https://picsum.photos/900/600?random=4",
+  "http://challenge.publitas.com/images/0.jpg",
+  "http://challenge.publitas.com/images/1.jpg",
+  "http://challenge.publitas.com/images/2.jpg",
+  "http://challenge.publitas.com/images/3.jpg",
 ];
 
 function App() {
