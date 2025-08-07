@@ -29,7 +29,7 @@ function ImageSlider({ images, width = 640, height = 400 }: ImageSliderProps) {
     animationFrameRef.current = requestAnimationFrame(() => {
       const canvas = canvasRef.current;
       const canRenderCanvas =
-        canvas && loadedImages.length > 0 && imagesLoaded === images.length;
+        canvas && loadedImages?.length > 0 && imagesLoaded === images.length;
 
       if (!canRenderCanvas) return;
 
@@ -45,7 +45,7 @@ function ImageSlider({ images, width = 640, height = 400 }: ImageSliderProps) {
       try {
         const imageElements = await loadImages(images);
         setLoadedImages(imageElements);
-        setImagesLoaded(imageElements.length);
+        setImagesLoaded(imageElements?.length || 0);
       } catch (error) {
         console.error("Error loading images", error);
       } finally {
@@ -68,8 +68,14 @@ function ImageSlider({ images, width = 640, height = 400 }: ImageSliderProps) {
         ref={canvasRef}
         width={width}
         height={height}
-        {...eventHandlers}
+        role="img"
+        aria-label="Image slider gallery"
+        aria-roledescription="Draggable image slider"
+        aria-valuemin={0}
+        aria-valuemax={images.length - 1}
+        aria-valuenow={Math.round(scrollOffset / width)} // Current image index
         style={{ cursor: isDragging ? "grabbing" : "grab" }}
+        {...eventHandlers}
       />
     </div>
   );

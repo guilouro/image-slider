@@ -8,6 +8,9 @@ function Loading() {
       style={{
         animation: "spin 1s linear infinite",
       }}
+      role="status"
+      aria-label="Loading"
+      aria-live="polite"
     >
       <circle
         cx="25"
