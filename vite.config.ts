@@ -14,6 +14,11 @@ export default defineConfig({
       brotliSize: true,
     }),
   ],
+  resolve: {
+    alias: {
+      "@": "/src",
+    },
+  },
   test: {
     globals: true,
     environment: "jsdom",

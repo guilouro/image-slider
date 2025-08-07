@@ -1,16 +1,16 @@
 import "@testing-library/jest-dom";
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
-import { loadImages } from "../../lib/canvas";
-import useDragScroll from "../../hooks/use-drag-scroll";
+import { loadImages } from "@/lib/canvas";
+import useDragScroll from "@/hooks/use-drag-scroll";
 import ImageSlider from "./index";
 
-vi.mock("../../lib/canvas", () => ({
+vi.mock("@/lib/canvas", () => ({
   drawAllImages: vi.fn(),
   loadImages: vi.fn(),
 }));
 
-vi.mock("../../hooks/use-drag-scroll", () => ({
+vi.mock("@/hooks/use-drag-scroll", () => ({
   default: vi.fn(),
 }));
 

@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { calculateImageDimensions, drawAllImages, loadImages } from "./index";
+import { calculateImageDimensions, drawAllImages, loadImages } from ".";
 
 describe("calculateImageDimensions", () => {
   it("should calculate dimensions for a wide image (fit to width)", () => {

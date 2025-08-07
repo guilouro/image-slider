@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import useDragScroll from "../../hooks/use-drag-scroll";
-import { drawAllImages, loadImages } from "../../lib/canvas";
-import Loading from "../Loading";
+import useDragScroll from "@/hooks/use-drag-scroll";
+import { drawAllImages, loadImages } from "@/lib/canvas";
+import Loading from "@/components/Loading";
 
 type ImageSliderProps = {
   images: string[];
