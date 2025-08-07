@@ -2,9 +2,7 @@
 
 A performant, draggable image slider built with React, TypeScript, and HTML5 Canvas. This project demonstrates modern web development practices with a focus on performance, reusability, and adaptable patterns that can be leveraged for other interactive UI components.
 
-## 📸 Demo
-
-![Demo](./demo.mp4)
+https://github.com/user-attachments/assets/a6bee2be-1f7f-4cdc-ba29-d2349da1c64c
 
 ## 🚀 Features
 
