@@ -49,8 +49,11 @@ function useDragScroll({
       const newScrollOffset = scrollOffset - deltaX;
       const minScrollOffset = Math.min(maxScrollOffset, newScrollOffset);
       const clampedOffset = Math.max(0, minScrollOffset);
-      setScrollOffset(clampedOffset);
-      setDragStartX(clientX);
+
+      if (clampedOffset !== scrollOffset) {
+        setScrollOffset(clampedOffset);
+        setDragStartX(clientX);
+      }
     },
     [dragStartX, scrollOffset, maxScrollOffset]
   );
