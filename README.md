@@ -127,6 +127,14 @@ npm run test:watch
 npm run test:ui
 ```
 
+## 🔄 CI/CD
+
+This project uses GitHub Actions for automated testing. The workflow runs on every push to main and:
+
+- Installs dependencies with `npm install`
+- Runs tests with `npm test`
+- Verifies the build with `npm run build`
+
 ## 📦 Using the Built Application
 
 After running `npm run build`, the optimized files will be generated in the `dist/` folder. You can serve these files using any static file server:
