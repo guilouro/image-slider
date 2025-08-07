@@ -2,10 +2,10 @@ import "./App.css";
 import ImageSlider from "./components/ImageSlider";
 
 const images = [
-  "http://challenge.publitas.com/images/0.jpg",
-  "http://challenge.publitas.com/images/1.jpg",
-  "http://challenge.publitas.com/images/2.jpg",
-  "http://challenge.publitas.com/images/3.jpg",
+  "/images/0.jpg",
+  "/images/1.jpg",
+  "/images/2.jpg",
+  "/images/3.jpg",
 ];
 
 function App() {
